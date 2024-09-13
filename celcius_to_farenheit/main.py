@@ -1,9 +1,9 @@
 #Asher Wangia, Celsius to Fahrenheit
 
-Celcius = input("What is your tempreature in celcius")
+celsius = int(input("What is your tempreature in celcius: "))
 
-Celcius = int(Celcius)
+fahrenheit = (celsius*9/5)+32
 
-Farenheit = (Celcius*9/5)+32
+fahrenheit = str(fahrenheit)
 
-print(Celcius, "degrees celcius,",Farenheit, "degrees farenheit" )
+print("Your tempreature is",celsius, "degrees celcius,",fahrenheit, "degrees farenheit." )
