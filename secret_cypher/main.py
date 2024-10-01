@@ -6,17 +6,28 @@ string = input("What is your message: ").lower
 
 shifts = int(input("How many places will you shift:"))
 def char(string, firstletter):
-    if string.isalpha():
+ if string == string:
         firstletter = "a"
         old = ord(string) - ord(firstletter)
         new = (old + shifts)
         return chr(new + ord(firstletter))
-    return string
+ return string
 
 
 def cypher(string, shifts):
     cipher = " "
-    cipher+= char(string, shifts)
+    cipher += char(string, shifts)
     return cipher
 cipher = cypher(string, shifts)
 print(f"Cipher: {cipher}")
+
+
+num = ("1")
+num = int(num)
+
+num = 1
+num = str(num)
+
+num = "1.5"
+
+num = float(num)
