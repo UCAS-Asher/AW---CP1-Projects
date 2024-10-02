@@ -1,33 +1,24 @@
 #Asher Wangia, Secret Cypher
 
-print("This Will Translate Your Message To A Secret Code")
+message = input("What Is The Message You Want To Encode: ")
+shifts = int(input("How Many Places Do you Want To Shift: "))
 
-string = input("What is your message: ").lower
+def convert(message,shifts):
+    converted = ""
+   
+    for a in range(len(message)):
+        char = message[a]
 
-shifts = int(input("How many places will you shift:"))
-def char(string, firstletter):
- if string == string:
-        firstletter = "a"
-        old = ord(string) - ord(firstletter)
-        new = (old + shifts)
-        return chr(new + ord(firstletter))
- return string
+        if char==" ":
+            converted+=" "
+        elif (char.isupper()):
+            converted += chr((ord(char) + shifts-65) + 65)
+        else:
+            converted += chr((ord(char) + shifts-97) + 97)
+    
+    return converted
 
-
-def cypher(string, shifts):
-    cipher = " "
-    cipher += char(string, shifts)
-    return cipher
-cipher = cypher(string, shifts)
-print(f"Cipher: {cipher}")
-
-
-num = ("1")
-num = int(num)
-
-num = 1
-num = str(num)
-
-num = "1.5"
-
-num = float(num)
+print("Original Message : " + message)
+print("Amount Of Shifts : " + str(shifts))
+print("Secret Message : " + convert(message,shifts))
+print("Your Message Has Been Encoded")
