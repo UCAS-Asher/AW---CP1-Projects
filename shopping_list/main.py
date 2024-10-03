@@ -1,15 +1,16 @@
 #Asher Wangia, Shopping list manager
-shoplist = ""
+shoplist = []
 
 def add():
     global shoplist
-    shoplist.append(input("Add To List: "))
+    adding = input("Add To List: ")
+    shoplist.append(adding)
 
 def removelist():
     global shoplist
     delete = input("What do you want to remove: ")
     if delete in shoplist:
-        shoplist.remove(shoplist)
+        shoplist.remove(delete)
     else:
         print("Not in Shopping List")
 
