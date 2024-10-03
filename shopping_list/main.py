@@ -1,16 +1,17 @@
 #Asher Wangia, Shopping list manager
+shoplist = ""
 
-shoplist = []
+def add():
+    global shoplist
+    shoplist.append(input("Add To List: "))
 
-def add(shoplist):
-    shoplist = shoplist,input("Add to the list: ")
-    return shoplist
-
-def removelist(shoplist):
+def removelist():
+    global shoplist
     delete = input("What do you want to remove: ")
     if delete in shoplist:
         shoplist.remove(shoplist)
-    return shoplist
+    else:
+        print("Not in Shopping List")
 
 
 
@@ -25,12 +26,15 @@ while True:
     Enter 3 to finish the list:\n""")
 
     if action =="1":
-        print(add(shoplist))
+        add()
+        print((shoplist))
+    
 
     elif action =="2":
-        print(removelist(shoplist))
+        removelist()
+        print((shoplist))
 
     else:
         print("Have a nice day!")
-        print(shoplist)
+        print((shoplist))
         break
