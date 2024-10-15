@@ -6,7 +6,8 @@ def display_intro():
     print("Your goal is to find the hidden treasure and escape safely.")
 
 def make_choice(options):
-    for i,option in enumerate(options,1):print(f"{i}. {option}")
+    for i,option in enumerate(options,1):
+        print(f"{i}. {option}")
     while True:
         try:
             choice=int(input("Enter your choice: "))
@@ -58,5 +59,7 @@ def play_game():
         elif choice==4:
             print("You decide to leave the forest. Game over!")
             return
-    if treasure_found:print("Congratulations! You've won the game!")
-if __name__=="__main__":play_game()
+    if treasure_found:
+        print("Congratulations! You've won the game!")
+if __name__=="__main__":
+    play_game()
