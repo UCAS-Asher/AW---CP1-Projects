@@ -1,10 +1,10 @@
 class BankAccount:
-    def __init__(self, account_number, balance=0):#
+    def __init__(self, account_number, balance=0):#The fuction defines balance, self.account_number and self.balance
         self.account_number = account_number
         self.balance = balance
 
     def deposit(self, amount):# This function adds an amount to the users account as long as it is positive.
-        if amount > 0:
+        if amount > 0: # The options are to add to the the 
             self.balance += amount
             return True
         return False
