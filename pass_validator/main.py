@@ -1,32 +1,35 @@
 #Asher Wangia, Password Validator
 pass_good = False
-numbers = ["1","2","3","4","5","6","7","8","9","0"]
-spec_char = ["@","#","$","%","*","&","!","?"]
+spec_char = "!@#$%^&*()_-+=?/><"
+length = False
+num = False
+char = False
 while pass_good == False:
     password = input("Type a Password: ")
     
-    if password != password[8:]:
-        print("Password needs to be 8 characters Long")
-        length = False
-    else:
-        length = True
-        continue
     
-    for x in numbers:
-        num = True
-        continue
-    else:
-         print("Password needs to have a Number")
-        num = False
+    if len(password) >= 8:
+        length = True
+    
+    for character in password:
+        if(character.isdigit()):
+            num = True  
+        if(not character.isalnum()):
+            char = True
 
-    if spec_char not in password:
-        print("Password needs a Special Character")
-        char = False
-    else:
         char = True
-        continue
-
-    if length == True and num == True and char ==True:
-        print("Your Password has been Accepted")
     else:
-        password = input("Try a Diffrent Password: ")
+        char = False
+   
+    # prints changes needed to be done
+    if length == False:
+        print("Password needs to be 8 Characters Long")
+    if num == False:
+        print("Password needs a Number")
+    if char == False:
+        print("Password needs a Special Character")
+    
+    # checks what is true 
+    if length == True and num == True and char == True: 
+        print("Password has met all of the Requirements")
+        pass_good == True  
