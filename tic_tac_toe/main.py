@@ -9,7 +9,7 @@ slot8 = "8"
 slot9 = "9"
 print("You are x")
 def play():
-    global turn
+    
     print(slot1, slot2, slot3)
     print(slot4, slot5 ,slot6)
     print(slot7 , slot8, slot9) 
@@ -19,4 +19,6 @@ def play():
     elif turn == 2:
         slot2 = "X"
     print(play())
-
+turn = input("choose a spot:")
+if turn == (slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot9):
+     = "x"

@@ -6,11 +6,12 @@ import random
 play = True
 player_score = 0
 cpu_score = 0
-cpu_choices = ["rock","paper","scissors"]
+comp_choices = ["rock","paper","scissors"]
 
 def cpu():
-    global cpu_choice
-    cpu_choice = random.choice(cpu_choices)
+    global comp_choice
+    comp_choice = random.choice(comp_choices)
+
 while play == True:
-    print(cpu())
-print(cpu_choice)
+    cpu()
+print(comp_choice)
