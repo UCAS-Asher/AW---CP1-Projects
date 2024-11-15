@@ -11,7 +11,7 @@ comp_choices = ["rock","paper","scissors"]
 while play == True:
     comp_choice = random.choice(comp_choices)
     user_choice = input("Pick rock, paper or scissors or exit to quit: ")
-    
+    print("Computer choose:",comp_choice)
     if user_choice == "rock" or "paper" or "scissors" or "exit":
         if user_choice == comp_choice:
             print("Its a Tie")
@@ -29,10 +29,17 @@ while play == True:
             print("Computer Score:", comp_score)
             play = False
             break
-        else:
+        elif comp_choice == "rock" and user_choice == "scissors":
             print("Computer Won")
             comp_score +=1
-    else:
-        print("Invalid Choice")
-        continue
+        elif comp_choice == "scissors" and user_choice == "paper":
+            print("Computer Won")
+            comp_score +=1
+        elif comp_choice == "paper" and user_choice == "rock":
+            print("Computer Won")
+            comp_score +=1
+        else:
+            print("Invalid Choice")
+            continue
+
    
