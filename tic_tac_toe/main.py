@@ -57,10 +57,10 @@ while game == True:
     
     
     for x in choices:
-        for "X" in x:
+        if x == "X" or x == "O":
             choices.remove(x)
-        for "O" in x:
-            choices.remove(x)
+
+
     
     comp_choice = random.choice(choices)
     
