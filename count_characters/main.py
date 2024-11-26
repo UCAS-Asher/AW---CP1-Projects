@@ -17,12 +17,28 @@ b = 0
 c = 0
 d = 0
 e = 0
-f = 0
-g = 0
 
-for x in grid:
-    for y in x:
-        if y == "A":
+
+for row in grid:
+    for char in row:
+        if char == "A":
             a +=1
+        elif char == "B":
+            b +=1
+        elif char == "C":
+            c +=1
+        elif char == "D":
+            d +=1
+        elif char == "E":
+            e +=1
+        
+print("A:", a)
+print("B:", b)
+print("C:", c)
+print("D:", d)
+print("E:", e)
 
-print(num_char)
+
+        
+    
+
