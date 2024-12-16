@@ -1,5 +1,7 @@
 #Asher Wangia, FINAL: Implementation
 
+import random
+
 one = "Isle of Dragons(1)"
 two = "Salamander Mountain(2)"
 three = "Dark Goblin Forest(3)"
@@ -7,19 +9,19 @@ four = "Enchanted Forest(4)"
 five = "Kingdom of Abal(5)"
 six = "Goblin Forest(6)"
 seven = "Demon Wasteland(7)"
-eight = "Destruction Warlord(8)"
+eight = "Destruction Castle(8)"
 nine = "Ancient Forest(9)"
 
 game_won = False 
 
 user_location = one
-
 user_health = 100
-defense = 0
-agility = 0
-strength = 0
-luck = 0
+defense = 5
+agility = 5
+strength = 5
+luck = 5
 
+stat_points = 0
 areas = []
 
 def user_areas():
@@ -43,14 +45,50 @@ def user_areas():
         areas = [seven,nine]
     elif user_location == nine:
         areas = [five,six,eight]
-    
-def area1():
+
+def user_action():
     print("""
-    Choose One of the Actions
-        1. Fight the Dragon
-        2. Go Back
+Choose One of the Actions
+    1. Explore the Area
+    2. Go to a Diffrent Area      
+    3. Stats
+    4. Inventory 
+          """)
+    action = input("Choose a Number: ")
+
+    if action == "1":
+        if user_location == one:
+            area1()
+
+def area1(stat_points):
+    print("""
+Choose One of the Actions
+    1. Fight the Dragon
+    2. Go Back
         """)
     user_area_action = input("Choose a Number: ")
+
+    if user_area_action == "1":
+        dragon_hp = 1500
+        combat_action = input("Choose 1 to attack or 2 to flee: ")
+        if combat_action == "1":
+            dragon_hp -= strength * 10
+            print("The dragon is at", dragon_hp, "HP now")
+            if dragon_hp <= 0:
+                stat_points += 15
+                print("The Dragon was Defeated!")
+                print("You leveled up 3 times!")
+
+       
+
+    elif user_area_action == "2":
+        print()
+
+
+
+def area2():
+    print()
+
 
 
 print("""
@@ -77,6 +115,7 @@ while game_won == False:
     print("MAP")
     for row in map:
         print(row)
+    user_action()
     break
 
 
