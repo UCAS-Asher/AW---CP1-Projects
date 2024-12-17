@@ -13,13 +13,13 @@ eight = "Destruction Castle(8)"
 nine = "Ancient Forest(9)"
 
 game_won = False 
-
+game_over = False
 user_location = one
 user_health = 100
-defense = 5
+defense = 0
 agility = 5
 strength = 5
-luck = 5
+luck = 1
 total_health = defense*10 + 100
 stat_points = 0
 storage = []
@@ -29,6 +29,7 @@ gold = 0
 potion = 0
 super_potion = 0
 ultra_potion = 0
+
 
 def user_areas():
     global areas
@@ -53,6 +54,8 @@ def user_areas():
         areas = [five,six,eight]
 
 def user_move():
+    global user_location
+    user_areas()
     print("Your location is", user_location)
     print("These are your available paths", areas)
     move = input("Choose the number of the location you want to go to: ")
@@ -78,6 +81,7 @@ def user_move():
     else:
         print("Invalid Option")
         user_move()
+    user_action()
 
 def user_stats(strength,defense,agility,luck):
     print("Health:",user_health,"/",total_health)
@@ -101,13 +105,13 @@ def user_stats(strength,defense,agility,luck):
                 luck += distribute
         else:
             print("You dont have enough Stat Points")
-            user_stats()
+            user_stats(strength,defense,agility,luck)
     else:
         print("Invalid Option")
-        user_stats()
+        user_stats(strength,defense,agility,luck)
             
 
-def inventory():
+def inventory(user_health,potion,super_potion,ultra_potion):
     print("1. Gold:",gold)
     print("2. Heal Potions:",potion)
     print("3. Heal Potions V2:", super_potion)
@@ -115,6 +119,7 @@ def inventory():
     print()
     print("1. Inspect")
     print("2. Go Back")
+    print("3. Use Item")
     inv_action = input("Choose a Number: ")
 
     if inv_action == "1":
@@ -127,12 +132,44 @@ def inventory():
             print("This Potion Can Be used to Heal 200 HP")
         elif inspect == "4":
             print("This Potion Can Be Used to Heal 600 HP")
+        else:
+            print("Invalid Item")
+        inventory(user_health,potion,super_potion,ultra_potion)
     elif inv_action == "2":
         user_action()
+    elif inv_action == "3":
+        use = input("Choose the number of the item to use: ")
+        if use == "1":
+            print("This item can only be used in the Kingdom")
+        elif use == "2" and potion > 0:
+            user_health += 50
+            potion -=1
+            if user_health > total_health:
+                user_health = total_health
+            print("You used a Potion")
+        elif use == "3" and super_potion > 0:
+            user_health += 200
+            super_potion -=1
+            if user_health > total_health:
+                user_health = total_health
+            print("You used a Potion V2")
+        elif use == "4" and ultra_potion > 0:
+            user_health += 600
+            ultra_potion -=1
+            if user_health > total_health:
+                user_health = total_health
+            print("You used a Potion V3")
+        else:
+            print("Invalid Option")
+        inventory(user_health,potion,super_potion,ultra_potion)
+    else:
+        print("Invalid Action")
+        inventory(user_health,potion,super_potion,ultra_potion)
 
 
 def user_action():
     print("You are in the", user_location)
+    print("You are at", user_health,"HP out of", total_health)
     print("""
 Choose One of the Actions
     1. Explore the Area
@@ -144,15 +181,17 @@ Choose One of the Actions
 
     if action == "1":
         if user_location == one:
-            area1()
+            area1(stat_points,user_health,gold,potion,super_potion,ultra_potion)
     elif action == "2":
         user_move()
     elif action == "3":
-        user_stats()
+        user_stats(strength,defense,agility,luck)
+    elif action == "4":
+        inventory(user_health,potion,super_potion,ultra_potion)
     
 
 
-def area1(stat_points):
+def area1(stat_points,user_health,gold,potion,super_potion,ultra_potion):
     print("""
 Choose One of the Actions
     1. Fight the Dragon
@@ -162,19 +201,38 @@ Choose One of the Actions
 
     if user_area_action == "1":
         dragon_hp = 1500
-        combat_action = input("Choose 1 to attack or 2 to flee: ")
-        if combat_action == "1":
-            dragon_hp -= strength * 10
-            print("The dragon is at", dragon_hp, "HP now")
-            if dragon_hp <= 0:
-                stat_points += 15
-                print("The Dragon was Defeated!")
-                print("You gained 15 stat points!")
-
-       
-
+        while dragon_hp > 0:
+            combat_action = input("Choose 1 to attack or 2 to flee: ")
+            if combat_action == "1":
+                dragon_hp -= strength * 10
+                print("The dragon is at", dragon_hp, "HP now")
+                monster_attack = random.choice(range(agility*2))
+                if monster_attack == 1:
+                    print("The Dragon Landed An Attack")
+                    user_health -=100
+                    if user_health < 1:
+                        game_over == True
+            elif combat_action == "2":
+                user_action()
+                break
+        if dragon_hp < 1:    
+            print("The Dragon was Defeated!")
+            print("You gained 15 stat points and 500 Gold!")
+            stat_points += 15
+            gold += 500
+            loot_drop = random.choice(range(100/luck))
+            if loot_drop >= 90/luck:
+                ultra_potion +=1
+                print("You got a Heal Potion V3")
+            elif loot_drop < 90/luck and loot_drop > 75/luck:
+                super_potion +=2
+                print("You got 2 Heal Potion V2")
+            elif loot_drop <= 75/luck:
+                potion +=5
+                print("You got 5 Heal Potions")
+        user_action()
     elif user_area_action == "2":
-        print()
+        user_action()
 
 
 
@@ -193,7 +251,10 @@ You can buy equipment from merchants with gold and it can be used to boost your 
 Agility Stats boost your chances of dodging monster attacks, Strength boosts your damage output, Luck boost your deals on Equipment and your loot drops and Defense boosts your HP.
                         """)
 
-while game_won == False:
+while game_won == False and game_over == False:
+    if user_health < 1:
+        game_over = True
+
     map_row1 = [one,two,three]
     map_row2 = [four,five,six]
     map_row3 = [seven,eight,nine]
