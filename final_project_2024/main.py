@@ -20,9 +20,15 @@ defense = 5
 agility = 5
 strength = 5
 luck = 5
-
+total_health = defense*10 + 100
 stat_points = 0
+storage = []
 areas = []
+
+gold = 0
+potion = 0
+super_potion = 0
+ultra_potion = 0
 
 def user_areas():
     global areas
@@ -46,7 +52,87 @@ def user_areas():
     elif user_location == nine:
         areas = [five,six,eight]
 
+def user_move():
+    print("Your location is", user_location)
+    print("These are your available paths", areas)
+    move = input("Choose the number of the location you want to go to: ")
+    
+    if move == "1" and one in areas:
+        user_location = one
+    elif move == "2" and two in areas:
+        user_location = two
+    elif move == "3" and three in areas:
+        user_location = three
+    elif move == "4" and four in areas:
+        user_location = four
+    elif move == "5" and five in areas:
+        user_location = five
+    elif move == "6" and six in areas:
+        user_location = six
+    elif move == "7" and seven in areas:
+        user_location = seven
+    elif move == "8" and eight in areas:
+        user_location = eight
+    elif move == "9" and nine in areas:
+        user_location = nine
+    else:
+        print("Invalid Option")
+        user_move()
+
+def user_stats(strength,defense,agility,luck):
+    print("Health:",user_health,"/",total_health)
+    print("1. Strength:", strength)
+    print("2. Defense:", defense)
+    print("3. Agility:", agility)
+    print("4. Luck:", luck)
+    stat = input("Which Stat would you like to distribute to(Type The Number): ")
+    
+    if stat == "1" or "2" or "3" or "4":
+        print("This is your amount of available stat points:", stat_points)
+        distribute = int(input("How much points do you want to distribute: "))
+        if distribute <= stat_points and distribute > 0:
+            if stat == "1":
+                strength += distribute
+            elif stat == "2":
+                defense += distribute
+            elif stat == "3":
+                agility += distribute
+            elif stat == "4":
+                luck += distribute
+        else:
+            print("You dont have enough Stat Points")
+            user_stats()
+    else:
+        print("Invalid Option")
+        user_stats()
+            
+
+def inventory():
+    print("1. Gold:",gold)
+    print("2. Heal Potions:",potion)
+    print("3. Heal Potions V2:", super_potion)
+    print("4. Heal Potions V3:", ultra_potion)
+    print()
+    print("1. Inspect")
+    print("2. Go Back")
+    inv_action = input("Choose a Number: ")
+
+    if inv_action == "1":
+        inspect = input("Choose the number of the item to inspect: ")
+        if inspect == "1":
+            print("Gold Can Be Used At The Kingdom")
+        elif inspect == "2":
+            print("This Potion Can Be Used to Heal 50 HP")
+        elif inspect == '3':
+            print("This Potion Can Be used to Heal 200 HP")
+        elif inspect == "4":
+            print("This Potion Can Be Used to Heal 600 HP")
+    elif inv_action == "2":
+        user_action()
+
+
 def user_action():
+    print("You are in the", user_location)
     print("""
 Choose One of the Actions
     1. Explore the Area
@@ -59,6 +145,12 @@ Choose One of the Actions
     if action == "1":
         if user_location == one:
             area1()
+    elif action == "2":
+        user_move()
+    elif action == "3":
+        user_stats()
+    
+
 
 def area1(stat_points):
     print("""
@@ -77,7 +169,7 @@ Choose One of the Actions
             if dragon_hp <= 0:
                 stat_points += 15
                 print("The Dragon was Defeated!")
-                print("You leveled up 3 times!")
+                print("You gained 15 stat points!")
 
        
 
@@ -92,11 +184,9 @@ def area2():
 
 
 print("""
-This is a game where you will have to travel, defeat monsters and level up to defeat the destruction warlord.
+This is a game where you will have to travel, defeat monsters and gain stat points to defeat the destruction warlord.
 
-You will have an Initial Amount of stat points to distribute to your character and will gain some for each level up.
-
-You will need to defeat monsters to acquire XP to level up.
+You will gain an Amount of stat points to distribute to your character after defeating a monster.
 
 You can buy equipment from merchants with gold and it can be used to boost your stats.
 
