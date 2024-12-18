@@ -15,14 +15,13 @@ nine = "Ancient Forest(9)"
 game_won = False 
 game_over = False
 user_location = one
-user_health = 100
-defense = 0
+user_health = 500
+defense = 4
 agility = 5
-strength = 5
+strength = 50
 luck = 1
 total_health = defense*10 + 100
 stat_points = 0
-storage = []
 areas = []
 
 gold = 0
@@ -31,31 +30,10 @@ super_potion = 0
 ultra_potion = 0
 
 
-def user_areas():
-    global areas
 
-    if user_location == one:
-        areas = [two,five,four]
-    elif user_location == two:
-        areas = [one,three,five]
-    elif user_location == three:
-        areas = [two,six,five]
-    elif user_location == four:
-        areas = [one,five,seven]
-    elif user_location == five:
-        areas = [two,three,four,six]
-    elif user_location == six:
-        areas = [three,five]
-    elif user_location == seven:
-        areas = [four,eight]
-    elif user_location == eight:
-        areas = [seven,nine]
-    elif user_location == nine:
-        areas = [five,six,eight]
-
+#Movement System
 def user_move():
     global user_location
-    user_areas()
     print("Your location is", user_location)
     print("These are your available paths", areas)
     move = input("Choose the number of the location you want to go to: ")
@@ -81,42 +59,76 @@ def user_move():
     else:
         print("Invalid Option")
         user_move()
-    user_action()
 
-def user_stats(strength,defense,agility,luck):
+
+
+#Stats System
+def user_stats():
+    global strength
+    global defense
+    global agility
+    global luck
+    global stat_points
+    
+    print("STATS")
     print("Health:",user_health,"/",total_health)
     print("1. Strength:", strength)
     print("2. Defense:", defense)
     print("3. Agility:", agility)
     print("4. Luck:", luck)
-    stat = input("Which Stat would you like to distribute to(Type The Number): ")
+    print("This is your amount of available stat points:", stat_points)
     
-    if stat == "1" or "2" or "3" or "4":
-        print("This is your amount of available stat points:", stat_points)
-        distribute = int(input("How much points do you want to distribute: "))
-        if distribute <= stat_points and distribute > 0:
-            if stat == "1":
-                strength += distribute
-            elif stat == "2":
-                defense += distribute
-            elif stat == "3":
-                agility += distribute
-            elif stat == "4":
-                luck += distribute
+    stat_option = input("1 to distribute points or 2 to go back: ")
+    
+    if stat_option == "1":
+        stat = input("Which Stat Do You Want To Distribute To?(Type The Number): ")
+        
+        if stat == "1" or stat == "2" or stat == "3" or stat == "4":
+            distribute = int(input("How much points do you want to distribute: "))
+            
+            if distribute <= stat_points and distribute > 0:
+                if stat == "1":
+                    strength += distribute
+                    stat_points -=distribute
+                elif stat == "2":
+                    defense += distribute
+                    stat_points -= distribute
+                elif stat == "3":
+                    agility += distribute
+                    stat_points -= distribute
+                elif stat == "4":
+                    luck += distribute
+                    stat_points-= distribute
+            else:
+                print("You dont have enough Stat Points")
+                user_stats()
         else:
-            print("You dont have enough Stat Points")
-            user_stats(strength,defense,agility,luck)
+            print("Invalid Choice")
+            user_stats()
+    elif stat_option == "2":
+        user_action()
     else:
         print("Invalid Option")
-        user_stats(strength,defense,agility,luck)
-            
+        user_stats()
 
-def inventory(user_health,potion,super_potion,ultra_potion):
+
+
+#Inventory System
+def inventory():
+    
+    global user_health
+    global potion
+    global super_potion
+    global ultra_potion
+    
+    
+    print("INVENTORY")
     print("1. Gold:",gold)
     print("2. Heal Potions:",potion)
     print("3. Heal Potions V2:", super_potion)
     print("4. Heal Potions V3:", ultra_potion)
     print()
+    print("Choices")
     print("1. Inspect")
     print("2. Go Back")
     print("3. Use Item")
@@ -134,7 +146,7 @@ def inventory(user_health,potion,super_potion,ultra_potion):
             print("This Potion Can Be Used to Heal 600 HP")
         else:
             print("Invalid Item")
-        inventory(user_health,potion,super_potion,ultra_potion)
+        inventory()
     elif inv_action == "2":
         user_action()
     elif inv_action == "3":
@@ -167,6 +179,7 @@ def inventory(user_health,potion,super_potion,ultra_potion):
         inventory(user_health,potion,super_potion,ultra_potion)
 
 
+#User Actions
 def user_action():
     print("You are in the", user_location)
     print("You are at", user_health,"HP out of", total_health)
@@ -174,24 +187,28 @@ def user_action():
 Choose One of the Actions
     1. Explore the Area
     2. Go to a Diffrent Area      
-    3. Stats
-    4. Inventory 
+    3. See Stats
+    4. See Inventory 
           """)
     action = input("Choose a Number: ")
 
     if action == "1":
         if user_location == one:
-            area1(stat_points,user_health,gold,potion,super_potion,ultra_potion)
+            area1()
     elif action == "2":
         user_move()
     elif action == "3":
-        user_stats(strength,defense,agility,luck)
+        user_stats()
     elif action == "4":
-        inventory(user_health,potion,super_potion,ultra_potion)
-    
+        inventory()
 
 
-def area1(stat_points,user_health,gold,potion,super_potion,ultra_potion):
+#Isle of Dragons
+def area1():
+    global stat_points
+    global user_health
+    global gold
+    global super_potion
     print("""
 Choose One of the Actions
     1. Fight the Dragon
@@ -208,50 +225,65 @@ Choose One of the Actions
                 print("The dragon is at", dragon_hp, "HP now")
                 monster_attack = random.choice(range(agility*2))
                 if monster_attack == 1:
-                    print("The Dragon Landed An Attack")
                     user_health -=100
-                    if user_health < 1:
-                        game_over == True
+                    print("The Dragon Landed An Attack")
+                if user_health < 1:
+                    game_over == True
+                    print("Game Over You Died!")
+                    break
             elif combat_action == "2":
-                user_action()
                 break
-        if dragon_hp < 1:    
+        if dragon_hp <= 0:    
             print("The Dragon was Defeated!")
-            print("You gained 15 stat points and 500 Gold!")
+            print("You gained 15 stat points and some Gold!")
             stat_points += 15
             gold += 500
-            loot_drop = random.choice(range(100/luck))
-            if loot_drop >= 90/luck:
-                ultra_potion +=1
-                print("You got a Heal Potion V3")
-            elif loot_drop < 90/luck and loot_drop > 75/luck:
+            gold+= luck*100
+            loot_drop = random.choice(range(100))
+            if loot_drop >= 90:
                 super_potion +=2
-                print("You got 2 Heal Potion V2")
-            elif loot_drop <= 75/luck:
-                potion +=5
-                print("You got 5 Heal Potions")
-        user_action()
+                print("You got 2 Heal Potions V2")
+            elif loot_drop < 90:
+                super_potion +=1
+                print("You got a Heal Potion V2")
     elif user_area_action == "2":
-        user_action()
+        pass
 
-
-
-def area2():
-    print()
-
-
+#Game Running
 
 print("""
+      
 This is a game where you will have to travel, defeat monsters and gain stat points to defeat the destruction warlord.
 
 You will gain an Amount of stat points to distribute to your character after defeating a monster.
 
 You can buy equipment from merchants with gold and it can be used to boost your stats.
 
-Agility Stats boost your chances of dodging monster attacks, Strength boosts your damage output, Luck boost your deals on Equipment and your loot drops and Defense boosts your HP.
+Agility Stats boost your chances of dodging monster attacks, Strength boosts your damage output, Luck boost your loot drops and Defense boosts your Max HP.
                         """)
 
+
 while game_won == False and game_over == False:
+
+    if user_location == one:
+        areas = [two,five,four]
+    elif user_location == two:
+        areas = [one,three,five]
+    elif user_location == three:
+        areas = [two,six,five]
+    elif user_location == four:
+        areas = [one,five,seven]
+    elif user_location == five:
+        areas = [two,three,four,six]
+    elif user_location == six:
+        areas = [three,five]
+    elif user_location == seven:
+        areas = [four,eight]
+    elif user_location == eight:
+        areas = [seven,nine]
+    elif user_location == nine:
+        areas = [five,six,eight]
+
     if user_health < 1:
         game_over = True
 
@@ -263,10 +295,18 @@ while game_won == False and game_over == False:
            map_row2,
            map_row3]
     
+    
     print("MAP")
     for row in map:
         print(row)
+    
     user_action()
-    break
+            
+
+
+
+
+
+
 
 
